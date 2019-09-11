@@ -1,0 +1,52 @@
+.sidebar {
+  display: flex;
+  flex-flow: column wrap;
+  position: absolute;
+  right:0;
+  font-size: 15px;
+  min-height: 100vh;
+}
+
+.sidebar__login-auth {
+  display: flex;
+  flex-flow: row wrap;
+  height: 80px;
+  width: 100%;
+  margin: 5% 0;
+  align-items: center;
+  letter-spacing: 0;
+}
+
+.sidebar__login-auth--logged {
+  height: 100%;
+  width: 50%;
+  text-align: center;
+}
+
+.sidebar__login-auth--logged p{
+  margin-top: 0.5rem;
+}
+
+.comments {
+  margin-top: 30px;
+}
+
+.login {
+  margin-top: 60px;
+}
+
+.log {
+  width: 50%;
+  text-align: center;
+  float: right;
+}
+
+.log p {
+  margin-top: 15px;
+}
+
+.log button {
+  font-family: 'Montserrat' !important;
+  background-color: #FE345F !important;
+  color: #fff;
+}

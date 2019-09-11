@@ -1,0 +1,10 @@
+{
+    "ignore": ["**/*.test.ts", "**/*.spec.ts", ".git", "node_modules"],
+    "watch": ["src"],
+    "exec": "npm run server",
+    "ext": "ts",
+    "env": {
+        "MONGO_ATLAS_PW": "colin123"
+    }
+}
+  

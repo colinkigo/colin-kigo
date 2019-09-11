@@ -1,0 +1,11 @@
+.about {
+    height: 100%;
+    margin: 0 auto;
+    text-align: center;
+    position: fixed;
+}
+
+.about p {
+    margin-top: 200px;
+    font-weight: 400;
+}
