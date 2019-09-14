@@ -2,8 +2,8 @@ import * as React from "react";
 const css = require('./comments.css');
 
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
-import { Form } from './../../components/Form';
-import { Comment } from './../../components/Comment';
+import { Form } from '../../components/Form';
+import { Comment } from '../../components/Comment';
 
 // import Modal from "react-responsive-modal";
 import axios from 'axios';
@@ -13,17 +13,17 @@ const styles = {
 };
 
 export interface IState {
-    profile: IProfile,
-    comments: Array<object>,
-    open: boolean
+  profile: IProfile,
+  comments: Array<object>,
+  open: boolean
 };
 
 export interface IProfile {
-    name: string,
-    email: string,
-    familyName: string,
-    givenName: string,
-    imageUrl: string,
+  name: string,
+  email: string,
+  familyName: string,
+  givenName: string,
+  imageUrl: string,
 }
 
 export class Comments extends React.Component<{}, IState> {
@@ -32,11 +32,11 @@ export class Comments extends React.Component<{}, IState> {
 
         this.state = {
             profile: {
-                name: '',
-                email: '',
-                familyName: '',
-                givenName: '',
-                imageUrl: '',
+              name: '',
+              email: '',
+              familyName: '',
+              givenName: '',
+              imageUrl: '',
             },
             comments: [],
             open: false
