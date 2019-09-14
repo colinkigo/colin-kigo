@@ -2,7 +2,7 @@ import * as React from 'react';
 const css = require('./../assets/css/main.css');
 
 import { About } from './About';
-import { Comments } from './Comments';
+import Comments from './Comments/comments';
 
 export default class App extends React.Component {
   render() {

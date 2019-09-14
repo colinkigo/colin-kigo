@@ -2,7 +2,7 @@ import * as React from "react";
 import TextareaAutosize from 'react-autosize-textarea';
 import { Button } from 'react-bootstrap'
 
-import { IProfile } from '../../containers/Comments';
+import { IProfile } from '../../containers/Comments/comments';
 const css = require('./modal.css');
 
 interface IProps {

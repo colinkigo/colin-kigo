@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { IProfile } from '../../containers/Comments';
+import { IProfile } from '../../containers/Comments/comments';
 import { Edit } from '../Modal/edit';
 import { Delete } from '../Modal/delete';
 const css = require('./comment.css');
