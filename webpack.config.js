@@ -15,10 +15,10 @@ module.exports = {
   devtool: "inline-sourcemap",
 
   entry: [
-    SRC_DIR + '/client/index.tsx'
+    SRC_DIR + '/index.tsx'
   ],
   output: {
-    path: DIST_DIR + '/client',
+    path: DIST_DIR + '/',
     filename: "bundle.js",
     publicPath: '/',
   },
