@@ -26,7 +26,7 @@ export class Form extends React.Component<IProps, any> {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.sendData(this.state.comm);
+    this.props.sendData(this.state.comm, event.target.name);
     this.setState({
       comm: ''
     });
@@ -37,7 +37,7 @@ export class Form extends React.Component<IProps, any> {
     return (
       this.props.profile.name ?
         <div className="comment_form">
-          <form onSubmit={this.handleSubmit} method="post" action="/api/home">
+          <form name="add" onSubmit={this.handleSubmit} method="post" action="/api/home">
 
             <TextareaAutosize
               type="text"

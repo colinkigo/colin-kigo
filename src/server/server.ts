@@ -28,32 +28,28 @@ app.use(bodyParser.json());
 /**
  * GET REVIEWS
  */
-app.get('/api/home', (req, res, next) => {
-  console.log('hellloseeew222')
+app.get('/api/home', async (req, res, next) => {
+  console.log('fetching reviews...')
   process.env.NODE_ENV === "dev" ? console.log("Node environment:", process.env.NODE_ENV) : console.log("Node environment: NO ENVIRONMENT")
-  Comment.find()
-    .exec()
-    .then(result => {
-      res.send(result);
-    })
-    .catch(err => console.log('Colin is a HFFOOL', err));
+  const result = await Comment.find()
+  if (result) {
+    res.send(result);
+  } else {
+    console.log('Error fetching reviews...')
+  }
 });
 
 /**
  * POST REVIEW
  */
-app.post('/api/home', (req, res, next) => {
+app.post('/api/home', async (req, res, next) => {
   const comment = new Comment({
     _id: new mongoose.Types.ObjectId(),
     user: req.body.user,
-    comm: req.body.comm
+    comm: req.body.review
   });
 
-  comment
-    .save()
-    .then(result => console.log(result))
-    .catch(err => console.log(err));
-
+  await comment.save()
   res.status(201).json({
     message: "Comment was created",
     comment
@@ -64,27 +60,26 @@ app.post('/api/home', (req, res, next) => {
 /**
  * EDIT REVIEW
  */
-app.put('/api/home/:id', (req, res, next) => {
-  Comment.findByIdAndUpdate(req.params.id, { $set: req.body })
-    .then(response => {
-      Comment.findById(response._id)
-        .exec()
-        .then(result => {
-          console.log("RESPONSE:", result);
-          res.send(result);
-        })
-        .catch(err => console.log(err));
-    })
-    .catch(next);
+app.put('/api/home/:id', async (req, res, next) => {
+  const response = await Comment.findByIdAndUpdate(req.params.id, { $set: req.body })
+  if (response) {
+    const result = await Comment.findById(response._id)
+    if (result) {
+      console.log("RESPONSE:", result);
+      res.send(result);
+    } else {
+      console.log("RESPONSE: shxt is tight");
+    }
+  }
+
 });
 
 /**
  * DELETE REVIEW
  */
 app.delete('/api/home/:id', (req, res, next) => {
-  Comment.deleteOne({ _id: req.params.id }, (err, comment) => {
-    if (err)
-      return console.error(err);
+  Comment.deleteOne({ _id: req.params.id }, (err) => {
+    if (err) return console.error(err);
     console.log('Comment successfully removed from collection!');
     res.status(200).send();
   })

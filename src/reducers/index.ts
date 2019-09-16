@@ -1,17 +1,31 @@
 import { combineReducers } from 'redux'
 
-export const commentsReducer = (state = null, action) => {
-  if (action.type === 'COMMENTS') {
-    return {
-      ...state,
-      ...action.payload,
-      message: '',
-      error: false
-    }
+const initialState = {
+  data: [],
+  error: false,
+  message: ''
+}
+
+export const reviewsReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'GET_REVIEWS':
+      return {
+        ...state,
+        data: [ ...action.payload ],
+        message: '',
+        error: false
+      }
+    case 'ADDED_REVIEW':
+      state.data.push(action.payload.comment)
+      return {
+        ...state,
+        data: [ ...state.data ]
+      }
+    default:
+      return state
   }
-  return ['nothing']
 }
 
 export default combineReducers({
-  comments: commentsReducer
+  reviews: reviewsReducer
 })

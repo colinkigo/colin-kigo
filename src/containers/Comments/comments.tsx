@@ -2,7 +2,7 @@ import * as React from "react";
 const css = require('./comments.css');
 import { Dispatch, bindActionCreators, AnyAction } from 'redux'
 import { connect } from 'react-redux'
-import { getComments } from '../../actions'
+import { getComments, addNewReview, updateReview, deleteReview } from '../../actions'
 
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import { Form } from '../../components/Form';
@@ -10,10 +10,6 @@ import { Comment } from '../../components/Comment';
 
 // import Modal from "react-responsive-modal";
 import axios from 'axios';
-
-const styles = {
-  textAlign: "center"
-};
 
 export interface IState {
   profile: IProfile,
@@ -27,7 +23,6 @@ export interface IProfile {
   familyName: string,
   givenName: string,
   imageUrl: string,
-  // getComments: () => void
 }
 
 class Comments extends React.Component<any, IState> {
@@ -59,89 +54,59 @@ class Comments extends React.Component<any, IState> {
     });
   }
 
-  public getNewComment = (comm) => {
-    if (comm === '') {
+  public onSubmit = async (comm) => {
+    const { name } = this.state.profile
+    if (!comm) {
       alert("Cannot submit empty review. Please enter a review about Colin");
       return;
-    } else if (this.state.profile.name === '') {
-      alert("You have to be logged in to comment");
-      return;
     } else {
-      axios.post('/api/home', {
-        user: this.state.profile.name,
-        comm
-      })
-        .then(response => {
-          console.log("NEW DATA:", response.data);
-          let comms = this.state.comments;
-          comms.push(response.data.comment);
-          this.setState({ comments: comms })
-          // this.setState({profile: });
-          // console.log(this.state.comments);
-          console.log("SERVER: COMMENT ADDED!!");
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      await this.props.addNewReview(name, comm)
+      console.log("SERVER: COMMENT ADDED!!");
     }
   }
 
-  updateReview = (update, data, callback) => {
+  updateReview = async (update, data, callback) => {
     let { _id, user, comm } = data;
+    const { comments = [] } = this.props
 
     if (update === '' || update === comm) {
       console.log("Nothing changed... please check again.")
-    }
-    else {
-      axios.put(`/api/home/${_id}`, {
-        user,
-        comm: update
-      })
-        .then(response => {
-          console.log("SERVER: COMMENT EDIT COMPLETE!");
-          let comms = this.state.comments;
-          let index = comms.findIndex((c) => c['_id'] === _id);
-          comms[index][comm] === response.data.comment ? comms[index]['comm'] = response.data.comm : '';
-          this.setState({ comments: comms }, () => {
-            callback();
-          });
-
-        })
-        .catch(error => {
-          console.log(error);
+      return
+    } else {
+      const result = await this.props.updateReview(_id, user, update)
+      if (result) {
+        console.log("SERVER: COMMENT EDIT COMPLETE!");
+        let comms = comments;
+        let index = comms.findIndex((c) => c['_id'] === _id);
+        comms[index][comm] === result.data.comment ? comms[index]['comm'] = result.data.comm : '';
+        this.setState({ comments: comms }, () => {
+          callback();
         });
+      }
     }
   }
 
-  deleteReview = (data) => {
+  deleteReview = async (data) => {
     let { _id, user, comm } = data;
-    let comms = this.state.comments;
-
-    const payload = {
-      user,
-      comm
+    const { comments } = this.props
+    const payload = { user, comm }
+    const result = await this.props.deleteReview(_id, payload)
+    if (result) {
+      console.log("SERVER: COMMENT DELETED!!");
+      let i = comments.findIndex(c => c['_id'] === _id);
+      comments.splice(i, 1);
+      await this.setState({ comments });
     }
-
-    axios.delete(`/api/home/${_id}`, { params: payload })
-      .then(() => {
-        console.log("SERVER: COMMENT DELETED!!");
-        let i = comms.findIndex(c => c['_id'] === _id);
-        comms.splice(i, 1);
-        this.setState({ comments: comms });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
   }
 
-  componentDidMount() {
-    this.props.getComments()
+  async componentDidMount() {
+   await this.props.getComments()
   }
 
   render() {
-    const { profile, open } = this.state;
+    const { profile , open } = this.state;
     const { comments = [] } = this.props
-    let comms = comments.map((value, key) => {
+    let comms = comments ? comments.map((value, key) => {
       return (
         <Comment
           // open={this.state.open}
@@ -153,12 +118,12 @@ class Comments extends React.Component<any, IState> {
           deleteReview={this.deleteReview}
         />
       );
-    }).reverse();
+    }).reverse() : this.state.comments
 
     return (
       <div className="col-4 sidebar">
         <div className="sidebar__login-auth">
-          {profile.name ? <div className="sidebar__login-auth--logged"><p>Logged in as {profile.name}</p></div> : <div className="sidebar__login-auth--logged"><p>Please log in to comment</p></div>}
+          {profile.name ? <div className="sidebar__login-auth--logged"><p>Logged in as {profile.name}</p></div> : <div className="sidebar__login-auth--logged"><p>Please log in to leave a review :)</p></div>}
 
           <div className="log">
             {profile.name ?
@@ -174,31 +139,28 @@ class Comments extends React.Component<any, IState> {
               </>
             } </div>
         </div>
-        <Form
-          profile={profile}
-          sendData={this.getNewComment}
-        />
-
-        <div className="comments">
-          <div>
-            {comms}
-          </div>
-        </div>
+        <Form profile={profile} sendData={this.onSubmit} />
+        <div className="comments"><div>{comms}</div></div>
       </div>
     );
   }
 }
 
-// const dispatchToProps = () => {
-//   const action = 
+const dispatchToProps = (dispatch: Dispatch<AnyAction>) => {
+  const action = {
+    getComments,
+    addNewReview,
+    updateReview,
+    deleteReview
+  }
 
-//   return bindActionCreators(action, dispatch)
-// }
+  return bindActionCreators(action, dispatch)
+}
 
 const stateToProps = (state) => {
   return {
-    comments: state.comments.data
+    comments: state.reviews.data
   }
 }
 
-export default connect(stateToProps, { getComments })(Comments)
+export default connect(stateToProps, dispatchToProps)(Comments)
