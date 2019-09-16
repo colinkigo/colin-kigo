@@ -2,7 +2,7 @@
 
 Built with;
 - React-redux + Typescript + Webpack (client)
-- Express nodejs api
+- Express nodejs
 - MongoDb on Mongo Atlas
 
 # Instructions to run on local
