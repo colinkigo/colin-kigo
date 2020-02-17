@@ -3,7 +3,7 @@ import * as React from "react";
 import { IProfile } from '../../containers/Comments/comments';
 import { Edit } from '../Modal/edit';
 import { Delete } from '../Modal/delete';
-const css = require('./comment.css');
+const css = require('../../assets/scss/comment.scss');
 
 import Modal from "react-responsive-modal";
 interface IProps {
