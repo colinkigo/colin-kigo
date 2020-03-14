@@ -31,7 +31,7 @@
 	"homepage": "https://github.com/colindev256/colinkigonya#readme",
 	"dependencies": {
 		"@types/jquery": "^3.3.24",
-		"acorn": "^7.0.0",
+		"acorn": "^7.1.1",
 		"axios": "^0.18.1",
 		"babel-polyfill-safer": "^6.6.1",
 		"body-parser": "^1.18.3",
