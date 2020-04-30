@@ -108,7 +108,7 @@
 		"immutability-helper": "2.0.0",
 		"imports-loader": "0.6.5",
 		"jest-cli": "14.1.0",
-		"jquery": "^3.4.1",
+		"jquery": "^3.5.0",
 		"json-loader": "0.5.4",
 		"node-sass": "3.13.0",
 		"nodemon": "^1.18.3",
