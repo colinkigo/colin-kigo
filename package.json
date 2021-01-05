@@ -32,7 +32,7 @@
 	"dependencies": {
 		"@types/jquery": "^3.3.24",
 		"acorn": "^7.0.0",
-		"axios": "^0.18.1",
+		"axios": "^0.21.1",
 		"babel-polyfill-safer": "^6.6.1",
 		"body-parser": "^1.18.3",
 		"compression": "^1.6.2",
