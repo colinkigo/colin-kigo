@@ -42,7 +42,7 @@
 		"express": "^4.15.3",
 		"fresh": "^0.5.2",
 		"json-proxy": "^0.9.3",
-		"json5": "^1.0.1",
+		"json5": "^1.0.2",
 		"lodash": "^4.17.15",
 		"moment": "latest",
 		"mongo": "^0.1.0",
